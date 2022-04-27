@@ -1,0 +1,7 @@
+FORK:
+- dziedziczona jest maska oraz zachowanie sygnału na sygnał (handler/ignore)
+- zapominane są pendowane sygnały rodzica
+
+EXEC:
+- dziedziczona jest maska oraz ignorowanie sygnału
+- zapominany jest handler

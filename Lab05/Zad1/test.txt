@@ -1,0 +1,4 @@
+echo "Raz dwa trzy \n 4 5 6"
+ls -all -f .. | wc -l
+find .. -type d | wc -l
+cat ./main.c | wc -c

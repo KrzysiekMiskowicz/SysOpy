@@ -1,0 +1,6 @@
+W zależności od użytej flagi, program może różnić się czasem kompilacji, wielkością pliku, ilością zajmowanej
+pamięci oraz czasem wykonania. Dla flag -O3 i -Ofast program wykonuje się najszybciej, kosztem długiego czasu
+kompilacji. Odwrotnie działa domyślna flaga -O0 - optymalizuje ona program pod względem czasu kompilcji, a także
+używanej pamięci. Najefektywniejszą flagą pod względem redukcji wielkości pliku jest za to -Os;
+Powyższe zależności mogą być ciężkie do zaobserwowania w raporcie ze względu na niewielkie czasy wykonywanych
+operacji.

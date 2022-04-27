@@ -1,0 +1,14 @@
+CC = gcc
+FLAGS = -Wall
+PROGRAM_NAME = main
+CHILD_PROGRAM_NAME = child
+N = 300
+
+test:
+	$(CC) $(PROGRAM_NAME).c -o $(PROGRAM_NAME)
+	$(CC) $(CHILD_PROGRAM_NAME).c -o $(CHILD_PROGRAM_NAME)
+	./$(PROGRAM_NAME) $(N)
+
+clean:
+	rm $(PROGRAM_NAME) $(CHILD_PROGRAM_NAME)
+	rm w*.txt

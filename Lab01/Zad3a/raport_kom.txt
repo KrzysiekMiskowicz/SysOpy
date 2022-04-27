@@ -1,0 +1,4 @@
+Statyczna kompilacja powoduje dłuższy czas wykonania programu, ponieważ ładowany kod musi zostać każdoroazowo
+pobrany do pamięci.
+Powyższe zależności mogą być ciężkie do zaobserwowania w raporcie ze względu na niewielkie czasy wykonywanych
+operacji.

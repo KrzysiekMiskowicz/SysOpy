@@ -1,0 +1,7 @@
+                               Operation	        Real Time [s] 	        User Time [s] 	     System Time [s]
+               creation_table_of_size_20	             0.000000 	             0.000000 	             0.000000
+     wc_files_on_12_different_size_files	             0.200000 	             0.000000 	             0.000000
+                     removal_of_2_blocks	             0.000000 	             0.000000 	             0.000000
+          wc_files_on_3_small_size_files	             0.020000 	             0.000000 	             0.000000
+                    removal_of_10_blocks	             0.000000 	             0.000000 	             0.000000
+           wc_files_on_10_big_size_files	             0.300000 	             0.000000 	             0.010000

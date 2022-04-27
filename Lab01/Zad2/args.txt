@@ -1,0 +1,31 @@
+start
+create_table 20
+stop creation_table_of_size_20
+start
+wc_files 3 small1.txt small1.txt small1.txt
+wc_files 3 small2.txt small2.txt small2.txt
+wc_files 3 medium.pdf medium.pdf medium.pdf
+wc_files 3 big.pdf big.pdf big.pdf
+stop wc_files_on_12_different_size_files
+start
+remove_block 0
+remove_block 1
+stop removal_of_2_blocks
+start
+wc_files 3 small1.txt small2.txt medium.pdf
+stop wc_files_on_3_small_size_files
+start
+remove_block 9
+remove_block 8
+remove_block 7
+remove_block 6
+remove_block 5
+remove_block 4
+remove_block 3
+remove_block 2
+remove_block 1
+remove_block 0
+stop removal_of_10_blocks
+start
+wc_files 10 big.pdf big.pdf big.pdf big.pdf big.pdf big.pdf big.pdf big.pdf big.pdf big.pdf
+stop wc_files_on_10_big_size_files

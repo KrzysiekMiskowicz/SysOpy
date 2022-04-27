@@ -1,0 +1,4 @@
+Czas wykonania programu dla n = 100 wyniósł: 1.550000s
+Czas wykonania programu dla n = 700 wyniósł: 10.660000s
+Czas wykonania programu dla n = 300 wyniósł: 4.940000s
+Czas wykonania programu dla n = 300 wyniósł: 4.870000s

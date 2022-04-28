@@ -25,8 +25,6 @@
 #define ALL_MESSAGE_SIZE sizeof(msg_t)
 #define MAX_MESSAGES 10
 
-#define SOMETHING_HAPPEND SIGUSR1
-
 typedef struct msg_t
 {
     long type;

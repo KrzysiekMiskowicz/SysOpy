@@ -17,10 +17,11 @@
 
 typedef struct client_t
 {
-    int qid;
+    char qname[CLIENT_NAME_LEN];
+    mqd_t qdesc;
 } client_t;
 
-int server_qid;
+mqd_t server_qdesc;
 client_t clients[MAX_CLIENTS];
 int clients_nr = 0;
 
@@ -38,7 +39,7 @@ void update_log(msg_t *msg)
     if(sender_id >= MAX_CLIENTS || sender_id < 0)
         sender_id = -1;
     time_t t = msg->timestamp;
-    sprintf(buf, "COMMAND_TYPE: %2ld ARGS: %10s SENDER_ID: %2d time: %16s",
+    sprintf(buf, "COMMAND_TYPE: %2ld ARGS: %30s SENDER_ID: %2d time: %16s",
             msg->type, msg->text, sender_id, asctime(localtime(&t)));
     fprintf(fp, "%s", buf);
     fclose(fp);
@@ -46,20 +47,18 @@ void update_log(msg_t *msg)
 
 void clean()
 {
-    delete_queue(server_qid, get_server_key());
+    delete_queue(SERVER_NAME);
 }
 
 void send_to_client(int client_id, msg_t *msg)
 {
-    if (client_id >= MAX_CLIENTS || clients[client_id].qid == INACTIVE)
+    if (client_id >= MAX_CLIENTS || clients[client_id].qdesc == INACTIVE)
     {
         fprintf(stderr, "Invalid client id: %d\n", client_id);
         return;
     }
-    if ((send(clients[client_id].qid, msg) == -1))
-    {
-        fprintf(stderr, "Unable to send message to client (id -> %d)\n", client_id);
-    }
+    send_message(clients[client_id].qdesc, msg, msg->type);
+
 }
 
 void handler_sigint(int sig)
@@ -68,24 +67,22 @@ void handler_sigint(int sig)
     msg.type = T_SERVER_SHUTDOWN;
     for(int i = 0; i < MAX_CLIENTS; ++i)
     {
-        if (clients[i].qid != INACTIVE)
+        if (clients[i].qdesc != INACTIVE)
         {
             send_to_client(i, &msg);
         }
     }
 
+    int type;
     while(clients_nr > 0)
     {
-        if(receive(server_qid, &msg) == -1)
-        {
-            perror("Server unable to receive message");
-            continue;
-        }
-        if(msg.type == T_STOP)
+        receive_message(server_qdesc, &msg, &type);
+        if(type == T_STOP)
         {
             update_log(&msg);
             clients_nr--;
         }
+        delete_queue(clients[msg.id].qname);
     }
     printf("Server disconnected!\n");
     exit(EXIT_SUCCESS);
@@ -97,7 +94,7 @@ int get_client_id()
         return -1;
     for(int i = 0; i < MAX_CLIENTS; ++i)
     {
-        if (clients[i].qid == INACTIVE)
+        if (clients[i].qdesc == INACTIVE)
         {
             clients_nr++;
             return i;
@@ -108,17 +105,14 @@ int get_client_id()
 
 void handler_init(msg_t *msg)
 {
-    key_t client_key;
-    sscanf(msg->text, "%d", &client_key);
+    char client_qname[CLIENT_NAME_LEN];
+    sscanf(msg->text, "%s", client_qname);
     int id = get_client_id();
 
     if(id != -1)
     {
-        if ((clients[id].qid = get_queue(client_key)) == -1)
-        {
-            perror("Server unable to establish client server_qid");
-        }
-
+        clients[id].qdesc = get_queue(client_qname);
+        strcpy(clients[id].qname, client_qname);
         msg_t init_msg;
         init_msg.type = T_INIT;
         init_msg.id = id;
@@ -140,17 +134,16 @@ void init()
     my_sa.sa_handler = handler_sigint;
     sigaction(SIGINT, &my_sa, NULL);
 
-    key_t key = get_server_key();
-
-    if((server_qid = create_queue(key)) == -1)
+    if((server_qdesc = create_queue(SERVER_NAME)) == -1)
     {
-        perror("Server unable to create a server_qid");
+        perror("Server unable to create a server queue");
         exit(EXIT_FAILURE);
     }
 
     for(int id = 0; id < MAX_CLIENTS; ++id)
     {
-        clients[id].qid = INACTIVE;
+        strcpy(clients[id].qname, "");
+        clients[id].qdesc = INACTIVE;
     }
 
     printf("Server established!\n");
@@ -159,12 +152,10 @@ void init()
 void handler_stop(msg_t *msg)
 {
     int client_id = msg->id;
-    if(close_queue(clients[client_id].qid) == -1)
-    {
-        perror("Unable to close client server_qid");
-    }
+    delete_queue(clients[client_id].qname);
 
-    clients[client_id].qid = INACTIVE;
+    clients[client_id].qdesc = INACTIVE;
+    strcpy(clients[client_id].qname, "");
     clients_nr--;
     printf("Client (id -> %d) disconnected from server\n", client_id);
 }
@@ -176,7 +167,7 @@ void handler_list(msg_t *msg)
     printf("----------\n");
     for(int i = 0; i < MAX_CLIENTS; i++)
     {
-        if(clients[i].qid != INACTIVE)
+        if(clients[i].qdesc != INACTIVE)
         {
             printf("Client id -> %d\n", i);
         }
@@ -189,9 +180,9 @@ void handler_2all(msg_t *msg)
     int sender_id = msg->id;
     for(int id = 0; id < MAX_CLIENTS; id++)
     {
-        if(clients[id].qid != INACTIVE && id != sender_id)
+        if(clients[id].qdesc != INACTIVE && id != sender_id)
         {
-            send(clients[id].qid, msg);
+            send_message(clients[id].qdesc, msg, T_2ALL);
         }
     }
 }
@@ -204,30 +195,34 @@ void handler_2one(msg_t *msg)
     {
         fprintf(stderr, "Invalid operation: client (id -> %d) tried to send message to itself!\n", sender_id);
     }
-    else if(sender_id >= MAX_CLIENTS || clients[receiver_id].qid == INACTIVE)
+    else if(sender_id >= MAX_CLIENTS || clients[receiver_id].qdesc == INACTIVE)
     {
         fprintf(stderr, "Invalid operation: client (id -> %d) tried to send message to inactive client "
                         "(id -> %d)!\n", sender_id, receiver_id);
     }
     else
     {
-        send(clients[receiver_id].qid, msg);
+        send_message(clients[receiver_id].qdesc, msg, T_2ONE);
     }
 }
 
 int main(int argc, char *argv[])
 {
     init();
-    msg_t msg;
     while(true)
     {
-        if(receive(server_qid, &msg) == -1)
-        {
-            perror("Server unable to receive message");
-            continue;
-        }
+        int type;
+        msg_t msg;
+        receive_message(server_qdesc, &msg, &type);
+
+//        printf("List msg params:\n");
+//        printf("type: %ld\n", msg.type);
+//        printf("id: %d\n", msg.id);
+//        printf("qname: %s\n", msg.text);
+//        printf("\n");
+
         update_log(&msg);
-        switch(msg.type)
+        switch(type)
         {
             case T_INIT:
             {

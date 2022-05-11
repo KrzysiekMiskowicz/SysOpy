@@ -1,0 +1,4 @@
+Najwieksza roznica pomiedzy operacjami w Zad1 i Zad2 jest brak mozliwosci wykonywania operacji
+na zbiorach semaforow przez interfejs POSIX. Dodatkowo nie ma zaimplelentowanej funkcjonalnosci
+czekania az semafor osiagnie wartosc 0 (co w tym zadaniu bylo przydatne).
+Programy dzialaja zarowno dla M, N < 5, jak i dla M, N > 5.

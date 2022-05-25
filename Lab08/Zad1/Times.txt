@@ -1,0 +1,92 @@
+Mode: value | threads: 1
+Thread id:  0. Time elapsed: 1625.297 us
+Total time elapsed: 1989.204000
+
+Mode: value | threads: 2
+Thread id:  0. Time elapsed: 1697.768 us
+Thread id:  1. Time elapsed: 1214.733 us
+Total time elapsed: 1998.283000
+
+Mode: value | threads: 4
+Thread id:  0. Time elapsed: 2117.232 us
+Thread id:  1. Time elapsed: 1438.908 us
+Thread id:  2. Time elapsed: 1968.508 us
+Thread id:  3. Time elapsed: 1091.869 us
+Total time elapsed: 2549.317000
+
+Mode: value | threads: 8
+Thread id:  0. Time elapsed: 1591.129 us
+Thread id:  1. Time elapsed: 1441.781 us
+Thread id:  2. Time elapsed: 1369.894 us
+Thread id:  3. Time elapsed: 1272.894 us
+Thread id:  4. Time elapsed: 1094.879 us
+Thread id:  5. Time elapsed: 798.819 us
+Thread id:  6. Time elapsed: 1158.648 us
+Thread id:  7. Time elapsed: 785.025 us
+Total time elapsed: 4511.772000
+
+Mode: value | threads: 16
+Thread id:  0. Time elapsed: 1562.482 us
+Thread id:  1. Time elapsed: 1759.475 us
+Thread id:  2. Time elapsed: 1724.549 us
+Thread id:  3. Time elapsed: 985.378 us
+Thread id:  4. Time elapsed: 1361.659 us
+Thread id:  5. Time elapsed: 1494.499 us
+Thread id:  6. Time elapsed: 1062.873 us
+Thread id:  7. Time elapsed: 1184.255 us
+Thread id:  8. Time elapsed: 1048.860 us
+Thread id:  9. Time elapsed: 1401.160 us
+Thread id: 10. Time elapsed: 1024.894 us
+Thread id: 11. Time elapsed: 1344.956 us
+Thread id: 12. Time elapsed: 1109.398 us
+Thread id: 13. Time elapsed: 1122.565 us
+Thread id: 14. Time elapsed: 1036.298 us
+Thread id: 15. Time elapsed: 880.990 us
+Total time elapsed: 8223.847000
+
+Mode: block | threads: 1
+Thread id:  0. Time elapsed: 752.593 us
+Total time elapsed: 980.176000
+
+Mode: block | threads: 2
+Thread id:  0. Time elapsed: 417.364 us
+Thread id:  1. Time elapsed: 444.548 us
+Total time elapsed: 743.444000
+
+Mode: block | threads: 4
+Thread id:  0. Time elapsed: 334.176 us
+Thread id:  1. Time elapsed: 578.009 us
+Thread id:  2. Time elapsed: 345.306 us
+Thread id:  3. Time elapsed: 277.917 us
+Total time elapsed: 903.548000
+
+Mode: block | threads: 8
+Thread id:  0. Time elapsed: 119.395 us
+Thread id:  1. Time elapsed: 202.911 us
+Thread id:  2. Time elapsed: 127.719 us
+Thread id:  3. Time elapsed: 200.779 us
+Thread id:  4. Time elapsed: 214.680 us
+Thread id:  5. Time elapsed: 257.485 us
+Thread id:  6. Time elapsed: 179.840 us
+Thread id:  7. Time elapsed: 110.393 us
+Total time elapsed: 1323.365000
+
+Mode: block | threads: 16
+Thread id:  0. Time elapsed: 138.409 us
+Thread id:  1. Time elapsed: 101.833 us
+Thread id:  2. Time elapsed: 92.509 us
+Thread id:  3. Time elapsed: 87.800 us
+Thread id:  4. Time elapsed: 98.090 us
+Thread id:  5. Time elapsed: 199.753 us
+Thread id:  6. Time elapsed: 120.911 us
+Thread id:  7. Time elapsed: 85.611 us
+Thread id:  8. Time elapsed: 113.372 us
+Thread id:  9. Time elapsed: 90.887 us
+Thread id: 10. Time elapsed: 99.923 us
+Thread id: 11. Time elapsed: 142.707 us
+Thread id: 12. Time elapsed: 77.515 us
+Thread id: 13. Time elapsed: 141.023 us
+Thread id: 14. Time elapsed: 182.087 us
+Thread id: 15. Time elapsed: 67.919 us
+Total time elapsed: 2405.695000
+

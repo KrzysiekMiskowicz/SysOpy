@@ -9,7 +9,7 @@
 #include <time.h>
 
 #define MAX_PIXEL_VAL 255
-#define MAX_LINE_LEN 256
+#define MAX_LINE_LEN 3000
 #define WHITE_SIGNS " \t\r\n"
 #define REPORT_FILE "Times.txt"
 
@@ -69,10 +69,10 @@ void load_image(char *fname)
     image = calloc(H, sizeof(int *));
     for(int r = 0; r < H; r++)
         image[r] = calloc(W, sizeof(int));
-    
+
     for(int r = 0; r < H; r++)
     {
-        fgets(line, W+1, f);
+        fgets(line, MAX_LINE_LEN, f);
         load_row(line, r);
     }
     fclose(f);
@@ -204,13 +204,11 @@ int main(int argc, char *argv[])
     {
         double *time;
         pthread_join(thread_ids[thread_id], (void *)&time);
-        printf("Thread id: %3d. Time elapsed: %lf microseconds\n", thread_id, *time);
-        fprintf(f_report, "Thread id: %3d. Time elapsed: %lf microseconds\n", thread_id, *time);
+        fprintf(f_report, "Thread id: %2d. Time elapsed: %.3lf us\n", thread_id, *time);
     }
     clock_gettime(CLOCK_REALTIME, &end);
     double *time = (double *)calculate_time(st, end);
 
-    printf("\nTotal time elapsed: %f\n", *time);
     fprintf(f_report, "Total time elapsed: %f\n\n", *time);
     fclose(f_report);
     save_negative(output_file);

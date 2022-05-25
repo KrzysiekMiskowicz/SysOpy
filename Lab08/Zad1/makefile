@@ -1,7 +1,7 @@
 CC = gcc
 FLAGS = -Wall -lpthread -lrt
 PROGRAM = main
-IMAGE = body1.ascii.pgm
+IMAGE = mona_lisa.ascii.pgm
 OUTPUT = output.pgm
 REPORT = Times.txt
 
